@@ -46,4 +46,39 @@ console.log(`\x1b[1mЗначение заданного интеграла ln(1 
 
 //Гаусс
 
+function gaussMethod(n, x) {
+    let polynoms = [];
+    //let X = new Array(n).fill(0);
+    let X = [];
+    let poly = 1;
+    // n - 1 ?...
+    //пффф Х - неизвестен же
+    for (let l = 0; l < n - 1; i++) {
+        for (let i = 0; i < n; i++) {
+            poly *= (x - X[i]);
+        }
+        polynoms[l] = poly * X[l];
+        poly = 1;
+    }
+    //теперь как-то считать сами x на основе полученных полиномов
+    //это у меня подынтегральные функции в polynoms
+    //для интегралов, которые должны составить систему уравнений
+
+    //теперь коэфициенты квадратуры
+    let numerator = 1;
+    let denominator = 1;
+    let A = [];
+    //емае тут тоже х - неизвестен
+    for (let i = 0; i < n; i++) {
+        for (k = 0; k < m; k++) {
+            if (i != k) {
+                numerator *= x - X[i]
+                denominator *= X[k] - X[i]
+            }
+            A[k] = numerator / denominator;
+        }
+    }
+    A.forEach(Ak => calcIntegralByComplexRectFormula(Ak, a, b))
+}
+
 

@@ -47,6 +47,7 @@ console.log(`\x1b[1mЗначение заданного интеграла ln(1 
 //Гаусс
 
 function gaussMethod(n, x) {
+    //n - количество узлов
     let polynoms = [];
     //let X = new Array(n).fill(0);
     let X = [];
@@ -81,4 +82,7 @@ function gaussMethod(n, x) {
     A.forEach(Ak => calcIntegralByComplexRectFormula(Ak, a, b))
 }
 
+
+// https://translated.turbopages.org/proxy_u/en-ru.ru.b788291c-644bbe59-80d2e2d6-74722d776562/https/en.wikipedia.org/wiki/Gaussian_quadrature
+//про изменение пределов интегрирования (Пример двухточечного квадратурного правила Гаусса)
 

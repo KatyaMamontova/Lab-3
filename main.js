@@ -10,7 +10,6 @@ const func = x => Math.log(1 + Math.exp(1 / (1 + x ** 2)));
 
 const xi = b; //так как формула правых прямоугольников
 
-const n = 3; //3 узла для формулы Гаусса
 
 function simpleRectFormula(f, a, b, xi) {
     return (b - a) * f(xi);
@@ -46,7 +45,8 @@ console.log(`\x1b[1mЗначение заданного интеграла ln(1 
 
 //Гаусс
 
-function gaussMethod(n, x) {
+function gaussMethod(x) {
+    const n = 3;
     let polynoms = [];
     //let X = new Array(n).fill(0);
     let X = [];
@@ -57,7 +57,7 @@ function gaussMethod(n, x) {
         for (let i = 0; i < n; i++) {
             poly *= (x - X[i]);
         }
-        polynoms[l] = poly * X[l];
+        polynoms[l] = poly * Math.pow(x, l);
         poly = 1;
     }
     //теперь как-то считать сами x на основе полученных полиномов

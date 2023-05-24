@@ -38,55 +38,47 @@ function calcIntegralByComplexRectFormula(f, a, b) {
     return I2;
 }
 
-console.log(`\x1b[1mЗначение определенного интеграла
-функции \x1b[3mln(1 + e^(1 / (1 + x^2)))\x1b[0m\x1b[1m на интервале \x1b[3m[${a}, ${b}]\x1b[0m\x1b[1m`)
-console.log(`1) с точностью ${eps} по составной формуле правых прямоугольников:
-\x1b[34m${calcIntegralByComplexRectFormula(func, a, b)}`);
+console.log(`\x1b[1mЗначение заданного интеграла ln(1 + e^(1 / (1 + x^2))) 
+с точностью ${eps} (по составной формуле правых прямоугольников):
+\x1b[34m${calcIntegralByComplexRectFormula(func, a, b)} \x1b[0m`);
 
 
 //Гаусс
-//https://en.m.wikipedia.org/wiki/Gaussian_quadrature
-const GAUSS_CONSTANTS = {
-    2: {
-        weights: [1, 1],
-        abscissas: [-0.5773502691896257, 0.5773502691896257]
-    },
-    3: {
-        weights: [
-            0.8888888888888889,
-            0.5555555555555556, 0.5555555555555556
-        ],
-        abscissas: [
-            0,
-            -0.774596669241483, 0.774596669241483
-        ]
-    },
-    4: {
-        weights: [
-            0.6521451548625461, 0.6521451548625461,
-            0.3478548451374538, 0.3478548451374538
-        ],
-        abscissas: [
-            -0.3399810435848563, 0.3399810435848563,
-            -0.8611363115940526, 0.8611363115940526
-        ]
+
+function gaussMethod(x) {
+    const n = 3;
+    let polynoms = [];
+    //let X = new Array(n).fill(0);
+    let X = [];
+    let poly = 1;
+    // n - 1 ?...
+    //пффф Х - неизвестен же
+    for (let l = 0; l < n - 1; i++) {
+        for (let i = 0; i < n; i++) {
+            poly *= (x - X[i]);
+        }
+        polynoms[l] = poly * Math.pow(x, l);
+        poly = 1;
     }
+    //теперь как-то считать сами x на основе полученных полиномов
+    //это у меня подынтегральные функции в polynoms
+    //для интегралов, которые должны составить систему уравнений
+
+    //теперь коэфициенты квадратуры
+    let numerator = 1;
+    let denominator = 1;
+    let A = [];
+    //емае тут тоже х - неизвестен
+    for (let i = 0; i < n; i++) {
+        for (k = 0; k < m; k++) {
+            if (i != k) {
+                numerator *= x - X[i]
+                denominator *= X[k] - X[i]
+            }
+            A[k] = numerator / denominator;
+        }
+    }
+    A.forEach(Ak => calcIntegralByComplexRectFormula(Ak, a, b))
 }
 
-function gaussQuadrature(f, interval, order = 3) {
-    if (interval[0] === interval[1]) {
-        return 0;
-    }
-    const { weights, abscissas } = GAUSS_CONSTANTS[order];
-    const [a, b] = interval;
-    let result = 0;
-    const m1 = (b - a) / 2;
-    const m2 = (b + a) / 2;
-    for (let i = 0; i <= order - 1; i++) {
-        result += weights[i] * f(m1 * abscissas[i] + m2);
-    }
-    return m1 * result;
-}
 
-console.log(`\x1b[37m2) с точностью ${eps} по составной формуле правых прямоугольников:
-\x1b[34m${gaussQuadrature(func, [a, b])} \x1b[0m`);
